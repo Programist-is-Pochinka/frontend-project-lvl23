@@ -88,19 +88,20 @@ const format = (value, replacer = ' ', spacesCount = 2) => {
 
     Object.entries(value).forEach(([key, value]) => {
       if (typeof value === "object" && value !== null) {
-        count += 1;
+        count += spacesCount;
         value = formatStr(value, count);
-        count -= 1;
+        count -= spacesCount;
       }
 
       str += `\n${replacer.repeat(count)}${key}: ${value}`;
     })
-    count -= spacesCount - 1;
+    count -= spacesCount - 2;
     str += `\n${replacer.repeat(count)}}`;
     return str;
   };
 
-  return formatStr(value, spacesCount);
+  const newSpaceCount = spacesCount + 2;
+  return formatStr(value, newSpaceCount);
 };
 
 export default (path1, path2) => {
