@@ -82,20 +82,20 @@ const conditionFormat = (file1, file2) => {
   return result;
 };
 
-const format = (value, replacer = ' ', spacesCount = 3) => {
+const format = (value, replacer = ' ', spacesCount = 2) => {
   const formatStr = (value, count) => {
     let str = '{';
 
     Object.entries(value).forEach(([key, value]) => {
       if (typeof value === "object" && value !== null) {
-        count += spacesCount;
+        count += 1;
         value = formatStr(value, count);
-        count -= spacesCount;
+        count -= 1;
       }
 
       str += `\n${replacer.repeat(count)}${key}: ${value}`;
     })
-    count -= spacesCount - 2;
+    count -= spacesCount - 1;
     str += `\n${replacer.repeat(count)}}`;
     return str;
   };
