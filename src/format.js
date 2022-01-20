@@ -17,7 +17,7 @@ const finalSort = (obj) => {
       return 0;
     })
     .forEach((key) => {
-      newObj[key] = obj[key];
+      newObj[key] = _.isPlainObject(obj[key]) ? finalSort(obj[key]) : obj[key];
     });
   return newObj;
 };
