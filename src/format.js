@@ -45,8 +45,6 @@ const conditionFormat = (file1, file2) => {
 
   Object.keys(file1).forEach((key1) => {
     Object.keys(file2).forEach((key2) => {
-      file1[key1] = (file1[key1] === '') ? null : file1[key1];
-      file2[key2] = (file2[key2] === '') ? null : file2[key2];
       if (Object.keys(file2).includes(key1) === false) {
         result[`- ${key1}`] = keyFormat(file1[key1], true);
       } else if (Object.keys(file1).includes(key2) === false) {
