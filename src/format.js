@@ -82,7 +82,7 @@ const conditionFormat = (file1, file2) => {
   return result;
 };
 
-const format = (value, replacer = ' ', spacesCount = 2) => {
+const format = (value, replacer = ' ', spacesCount = 3) => {
   const formatStr = (value, count) => {
     let str = '{';
 
