@@ -100,8 +100,7 @@ const format = (value, replacer = ' ', spacesCount = 2) => {
     return str;
   };
 
-  const newSpaceCount = spacesCount + 2;
-  return formatStr(value, newSpaceCount);
+  return formatStr(value, spacesCount);
 };
 
 export default (path1, path2) => {
