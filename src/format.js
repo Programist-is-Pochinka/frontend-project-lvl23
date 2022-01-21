@@ -58,7 +58,7 @@ const conditionFormat = (file1, file2) => {
         result[`+ ${key1}`] = keyFormat(file2[key1], false);
       } else if (_.isPlainObject(file1[key1]) || _.isPlainObject(file2[key2])) {
         return 0;
-      } else if (file1[key1] === file2[key2]) {
+      } else if (file1[key1] === file2[key2] && key1 === key2) {
         result[`  ${key1}`] = keyFormat(file1[key1]);
       } else if (file1[key1] === file2[key1]) {
         result[`  ${key1}`] = keyFormat(file1[key1]);
