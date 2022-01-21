@@ -87,7 +87,7 @@ const format = (value, replacer = ' ', spacesCount = 2) => {
     let str = '{';
 
     Object.entries(value).forEach(([key, value]) => {
-      if (typeof value === "object" && value !== null) {
+      if (_.isPlainObject(value)) {
         count += spacesCount * 2;
         value = formatStr(value, count);
         count -= spacesCount * 2;
