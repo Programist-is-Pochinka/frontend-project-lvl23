@@ -7,20 +7,20 @@ const selectValue = (value) => {
 
 const updateString = (prop, from, to) => {
   if (to === '[complex value]') {
-    return `Property '${prop}' was updated. From ${JSON.stringify(from)} to [complex value]`;
+    return `Property '${prop}' was updated. From '${from}' to [complex value]`;
   }
   if (from === '[complex value]') {
-    return `Property '${prop}' was updated. From [complex value] to ${JSON.stringify(to)}`;
+    return `Property '${prop}' was updated. From [complex value] to '${to}'`;
   }
 
-  return `Property '${prop}' was updated. From ${JSON.stringify(from)} to ${JSON.stringify(to)}`;
+  return `Property '${prop}' was updated. From '${from}' to '${to}'`;
 };
 
 const addString = (prop, to) => {
   if (to === '[complex value]') {
     return `Property '${prop}' was added with value: [complex value]`;
   }
-  return `Property '${prop}' was added with value: ${JSON.stringify(to)}`;
+  return `Property '${prop}' was added with value: '${to}'`;
 };
 
 const removeString = (prop) => `Property '${prop}' was removed`;
