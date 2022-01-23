@@ -1,3 +1,3 @@
-import format from './src/format.js';
+import format from './src/formatters/index.js';
 
 export default format;

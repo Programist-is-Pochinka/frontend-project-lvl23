@@ -1,7 +1,4 @@
-import process from 'process';
-import * as path from 'path';
 import _ from 'lodash';
-import parse from './parsers.js';
 
 const finalSort = (obj) => {
   const newObj = {};
@@ -17,7 +14,7 @@ const finalSort = (obj) => {
       return 0;
     })
     .forEach((key) => {
-      newObj[key] = _.isPlainObject(obj[key]) ? finalSort(obj[key]) : obj[key];
+      newObj[key] = _._.isPlainObject(obj[key]) ? finalSort(obj[key]) : obj[key];
     });
   return newObj;
 };
@@ -25,17 +22,18 @@ const finalSort = (obj) => {
 const keyFormat = (node, isInclude = null) => {
   if (_.isPlainObject(node)) {
     return Object.keys(node).reduce((accum, key) => {
+      const result = _.cloneDeep(accum);
       if (isInclude) {
-        accum[`  ${key}`] = _.isPlainObject(node[key]) ? keyFormat(node[key]) : node[key];
-        return accum;
+        result[`  ${key}`] = _.isPlainObject(node[key]) ? keyFormat(node[key]) : node[key];
+        return result;
       }
       if (isInclude === false) {
-        accum[`  ${key}`] = _.isPlainObject(node[key]) ? keyFormat(node[key]) : node[key];
-        return accum;
+        result[`  ${key}`] = _.isPlainObject(node[key]) ? keyFormat(node[key]) : node[key];
+        return result;
       }
-      accum[`  ${key}`] = _.isPlainObject(node[key]) ? keyFormat(node[key]) : node[key];
-      return accum;
-    }, {})
+      result[`  ${key}`] = _.isPlainObject(node[key]) ? keyFormat(node[key]) : node[key];
+      return result;
+    }, {});
   }
   return node;
 };
@@ -49,14 +47,14 @@ const conditionFormat = (file1, file2) => {
         result[`- ${key1}`] = keyFormat(file1[key1], true);
       } else if (Object.keys(file1).includes(key2) === false) {
         result[`+ ${key2}`] = keyFormat(file2[key2], false);
-      } else if (_.isPlainObject(file1[key1]) && _.isPlainObject(file2[key2])) {
+      } else if (_._.isPlainObject(file1[key1]) && _._.isPlainObject(file2[key2])) {
         if (key1 === key2) {
           result[`  ${key1}`] = conditionFormat(file1[key1], file2[key2]);
         }
       } else if (key1 === key2 && file1[key1] !== file2[key2]) {
         result[`- ${key1}`] = keyFormat(file1[key1], true);
         result[`+ ${key1}`] = keyFormat(file2[key1], false);
-      } else if (_.isPlainObject(file1[key1]) || _.isPlainObject(file2[key2])) {
+      } else if (_._.isPlainObject(file1[key1]) || _._.isPlainObject(file2[key2])) {
         return 0;
       } else if (file1[key1] === file2[key2] && key1 === key2) {
         result[`  ${key1}`] = keyFormat(file1[key1]);
@@ -82,36 +80,27 @@ const conditionFormat = (file1, file2) => {
   return result;
 };
 
-const format = (value, replacer = ' ', spacesCount = 2) => {
-  const formatStr = (value, count) => {
+export const formatFunc = (value, replacer = ' ', spacesCount = 2) => {
+  const formatStr = (node, count) => {
     let str = '{';
+    let newCount = count;
 
-    Object.entries(value).forEach(([key, value]) => {
-      if (_.isPlainObject(value)) {
-        count += spacesCount * 2;
-        value = formatStr(value, count);
-        count -= spacesCount * 2;
+    Object.entries(node).forEach(([key, newValue]) => {
+      let resultObj = _.cloneDeep(newValue);
+      if (_.isPlainObject(resultObj)) {
+        newCount += spacesCount * 2;
+        resultObj = formatStr(resultObj, newCount);
+        newCount -= spacesCount * 2;
       }
 
-      str += `\n${replacer.repeat(count)}${key}: ${value}`;
-    })
-    count -= spacesCount;
-    str += `\n${replacer.repeat(count)}}`;
+      str += `\n${replacer.repeat(newCount)}${key}: ${resultObj}`;
+    });
+    newCount -= spacesCount;
+    str += `\n${replacer.repeat(newCount)}}`;
     return str;
   };
 
-  return formatStr(value, spacesCount);
+  console.log(formatStr(value, spacesCount));
 };
 
-export default (path1, path2) => {
-  const firstPath = path.resolve(process.cwd(), path1);
-  const secondPath = path.resolve(process.cwd(), path2);
-
-  const format1 = path.extname(firstPath);
-  const format2 = path.extname(secondPath);
-
-  const obj1 = parse(format1, firstPath);
-  const obj2 = parse(format2, secondPath);
-
-  return format(finalSort(conditionFormat(obj1, obj2)));
-};
+export const stylishFunc = (obj1, obj2) => finalSort(conditionFormat(obj1, obj2));
