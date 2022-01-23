@@ -1,1 +1,1 @@
-export default (obj) => console.log(JSON.stringify(obj));
+export default (obj) => JSON.stringify(obj);

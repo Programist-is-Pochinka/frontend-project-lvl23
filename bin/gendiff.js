@@ -10,9 +10,9 @@ program
   .arguments('<filepath1> <filepath2>')
   .action((file1, file2) => {
     if (program.opts().format === undefined || program.opts().format.toLowerCase() === 'stylish') {
-      gendiff(file1, file2);
+      console.log(gendiff(file1, file2));
     } else if (program.opts().format.toLowerCase() === 'json') {
-      gendiff(file1, file2, 'json');
+      console.log(gendiff(file1, file2, 'json'));
     } else if (program.opts().format.toLowerCase() === 'plain') {
       gendiff(file1, file2, 'plain');
     }
