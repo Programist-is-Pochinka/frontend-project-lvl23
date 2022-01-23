@@ -96,9 +96,7 @@ const filterPlain = (arr) => {
   });
 };
 
-const outputPlain = (arr) => {
-  arr.forEach((item) => console.log(item));
-};
+const outputPlain = (arr) => arr.join('\n');
 
 export default (obj) => {
   const formatted = formatPlain(obj);
