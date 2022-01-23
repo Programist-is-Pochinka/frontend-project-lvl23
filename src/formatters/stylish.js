@@ -100,7 +100,7 @@ export const formatFunc = (value, replacer = ' ', spacesCount = 2) => {
     return str;
   };
 
-  formatStr(value, spacesCount);
+  return formatStr(value, spacesCount);
 };
 
 export const stylishFunc = (obj1, obj2) => finalSort(conditionFormat(obj1, obj2));
