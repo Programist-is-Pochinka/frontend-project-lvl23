@@ -53,13 +53,10 @@ const formatPlain = (node, prop = '', isRecursion = false) => {
         } else {
           result.push(updateString(newParent, node[key], selectedValue));
         }
-        return;
-      } if (key[0] === '-') {
+      } else if (key[0] === '-') {
         result.push(removeString(newParent));
-        return;
-      } if (key[0] === '+') {
+      } else if (key[0] === '+') {
         result.push(addString(newParent, selectValue(node[key])));
-        return;
       }
 
       if (_.isPlainObject(node[key])) {
@@ -73,16 +70,11 @@ const formatPlain = (node, prop = '', isRecursion = false) => {
         } else {
           result.push(updateString(newParent, node[key], selectedValue));
         }
-        return;
-      } if (key[0] === '-') {
+      } else if (key[0] === '-') {
         result.push(removeString(newParent));
-        return;
-      } if (key[0] === '+') {
+      } else if (key[0] === '+') {
         result.push(addString(newParent, selectValue(node[key])));
-        return;
-      }
-
-      if (_.isPlainObject(node[key])) {
+      } else if (_.isPlainObject(node[key])) {
         result.concat(formatPlain(node[key], prop.concat('', key.substring(2)), true));
       }
     }
@@ -106,5 +98,6 @@ const outputPlain = (arr) => arr.join('\n');
 export default (obj) => {
   const formatted = formatPlain(obj);
   const filtered = filterPlain(formatted);
+  console.log(outputPlain(filtered));
   return outputPlain(filtered);
 };
