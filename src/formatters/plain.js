@@ -98,6 +98,5 @@ const outputPlain = (arr) => arr.join('\n');
 export default (obj) => {
   const formatted = formatPlain(obj);
   const filtered = filterPlain(formatted);
-  console.log(outputPlain(filtered));
   return outputPlain(filtered);
 };

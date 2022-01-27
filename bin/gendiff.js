@@ -14,7 +14,7 @@ program
     } else if (program.opts().format.toLowerCase() === 'json') {
       console.log(gendiff(file1, file2, 'json'));
     } else if (program.opts().format.toLowerCase() === 'plain') {
-      gendiff(file1, file2, 'plain');
+      console.log(gendiff(file1, file2, 'plain'));
     }
   })
   .parse(process.argv);

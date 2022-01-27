@@ -6,10 +6,10 @@ import jsonFunc from './json.js';
 import { formatFunc, stylishFunc } from './stylish.js';
 
 const chooseFormat = (obj, format) => {
-  if (format.toLowerCase() === 'plain') {
+  if (format === 'plain') {
     return plainFunc(obj);
   }
-  if (format.toLowerCase() === 'json') {
+  if (format === 'json') {
     return jsonFunc(obj);
   }
 
