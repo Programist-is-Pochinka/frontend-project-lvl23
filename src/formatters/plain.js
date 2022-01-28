@@ -30,9 +30,7 @@ const addString = (prop, to) => {
 
 const removeString = (prop) => `Property '${prop}' was removed`;
 
-const result = [];
-
-const formatPlain = (node, prop = '', isRecursion = false) => {
+const formatPlain = (node, prop = '', isRecursion = false, result = []) => {
   const parent = prop;
   Object.keys(node).forEach((key) => {
     const dublicateKeys = Object
@@ -60,7 +58,7 @@ const formatPlain = (node, prop = '', isRecursion = false) => {
       }
 
       if (_.isPlainObject(node[key])) {
-        result.concat(formatPlain(node[key], newParent, true));
+        result.concat(formatPlain(node[key], newParent, true, result));
       }
     } else {
       const newParent = key.substring(2);
@@ -75,11 +73,10 @@ const formatPlain = (node, prop = '', isRecursion = false) => {
       } else if (key[0] === '+') {
         result.push(addString(newParent, selectValue(node[key])));
       } else if (_.isPlainObject(node[key])) {
-        result.concat(formatPlain(node[key], prop.concat('', key.substring(2)), true));
+        result.concat(formatPlain(node[key], prop.concat('', key.substring(2)), true, result));
       }
     }
   });
-
   return result;
 };
 
