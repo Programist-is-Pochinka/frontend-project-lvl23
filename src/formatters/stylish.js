@@ -90,11 +90,11 @@ export const formatFunc = (value, replacer = ' ', spacesCount = 2) => {
     }
 
     const deepIndentSize = depth + spacesCount;
-    const deepIndent = replacer.repeat(deepIndentSize * 2);
+    const deepIndent = replacer.repeat(deepIndentSize);
     const currentIndent = replacer.repeat(depth);
     const lines = Object
       .entries(currentValue)
-      .map(([key, val]) => `${deepIndent}${key}: ${iter(val, deepIndentSize)}`);
+      .map(([key, val]) => `${deepIndent}${key}: ${iter(val, deepIndentSize + 2)}`);
 
     return [
       '{',
