@@ -29,11 +29,11 @@ const keyFormat = (node, isInclude = null) => {
     return Object.keys(node).reduce((accum, key) => {
       const result = _.cloneDeep(accum);
       if (isInclude) {
-        _.set(result, key, _.isPlainObject(node[key]) ? keyFormat(node[key]) : node[key]);
+        _.set(result, `  ${key}`, _.isPlainObject(node[key]) ? keyFormat(node[key]) : node[key]);
       } else if (isInclude === false) {
-        _.set(result, key, _.isPlainObject(node[key]) ? keyFormat(node[key]) : node[key]);
+        _.set(result, `  ${key}`, _.isPlainObject(node[key]) ? keyFormat(node[key]) : node[key]);
       } else {
-        _.set(result, key, _.isPlainObject(node[key]) ? keyFormat(node[key]) : node[key]);
+        _.set(result, `  ${key}`, _.isPlainObject(node[key]) ? keyFormat(node[key]) : node[key]);
       }
       return result;
     }, {});
