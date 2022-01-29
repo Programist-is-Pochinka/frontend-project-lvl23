@@ -12,7 +12,6 @@ const chooseFormat = (obj, format) => {
   if (format === 'json') {
     return jsonFunc(obj);
   }
-
   return formatFunc(obj);
 };
 

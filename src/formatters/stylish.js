@@ -14,7 +14,7 @@ const finalSort = (obj) => {
       return 0;
     })
     .forEach((key) => {
-      newObj[key] = _._.isPlainObject(obj[key]) ? finalSort(obj[key]) : obj[key];
+      newObj[key] = _.isPlainObject(obj[key]) ? finalSort(obj[key]) : obj[key];
     });
   return newObj;
 };
@@ -81,26 +81,29 @@ const conditionFormat = (file1, file2) => {
 };
 
 export const formatFunc = (value, replacer = ' ', spacesCount = 2) => {
-  const formatStr = (node, count) => {
-    let str = '{';
-    let newCount = count;
+  const iter = (currentValue, depth) => {
+    if (_.isNull(currentValue)) {
+      return currentValue;
+    }
+    if (_.isPlainObject(currentValue) === false) {
+      return currentValue.toString();
+    }
 
-    Object.entries(node).forEach(([key, newValue]) => {
-      let resultObj = _.cloneDeep(newValue);
-      if (_.isPlainObject(resultObj)) {
-        newCount += spacesCount * 2;
-        resultObj = formatStr(resultObj, newCount);
-        newCount -= spacesCount * 2;
-      }
+    const deepIndentSize = depth + spacesCount;
+    const deepIndent = replacer.repeat(deepIndentSize);
+    const currentIndent = replacer.repeat(depth);
+    const lines = Object
+      .entries(currentValue)
+      .map(([key, val]) => `${deepIndent}${key}: ${iter(val, deepIndentSize)}`);
 
-      str += `\n${replacer.repeat(newCount)}${key}: ${resultObj}`;
-    });
-    newCount -= spacesCount;
-    str += `\n${replacer.repeat(newCount)}}`;
-    return str;
+    return [
+      '{',
+      ...lines,
+      `${currentIndent}}`,
+    ].join('\n');
   };
 
-  return formatStr(value, spacesCount);
+  return iter(value, 0);
 };
 
 export const stylishFunc = (obj1, obj2) => finalSort(conditionFormat(obj1, obj2));
