@@ -3,17 +3,8 @@ import * as path from 'path';
 import parse from '../parsers.js';
 import plainFunc from './plain.js';
 import jsonFunc from './json.js';
-import { formatFunc, stylishFunc } from './stylish.js';
-
-const chooseFormat = (obj, format) => {
-  if (format === 'plain') {
-    return plainFunc(obj);
-  }
-  if (format === 'json') {
-    return jsonFunc(obj);
-  }
-  return formatFunc(obj);
-};
+import stylishFunc from './stylish.js';
+import createTree from '../createTree.js';
 
 export default (path1, path2, format = 'stylish') => {
   const firstPath = path.resolve(process.cwd(), path1);
@@ -24,7 +15,15 @@ export default (path1, path2, format = 'stylish') => {
 
   const obj1 = parse(format1, firstPath);
   const obj2 = parse(format2, secondPath);
-  const finalObj = stylishFunc(obj1, obj2);
+  const tree = createTree(obj1, obj2);
+  const stylish = stylishFunc(obj1, obj2);
 
-  return chooseFormat(finalObj, format);
+  switch (format) {
+    case 'plain':
+      return plainFunc(tree);
+    case 'json':
+      return jsonFunc(stylish);
+    default:
+      return stylish;
+  }
 };
