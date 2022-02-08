@@ -16,7 +16,6 @@ const chooseKey = (value, status = 'notChanged') => {
 
 export const formatFunc = (value, replacer = ' ', spacesCount = 2) => {
   const iter = (currentValue, depth) => {
-    console.log(currentValue);
     if (_.isNull(currentValue[1])) {
       return currentValue[1];
     }
@@ -52,18 +51,25 @@ const deepEntries = (node) => {
 };
 
 const format = (tree) => {
-  const newTree = tree.map((item) => {
+  const newTree = tree.reduce((accum, item) => {
     const { key } = item;
     const newKey = chooseKey(key, item.status);
     if (item.status === 'parent') {
-      return [newKey, format(item.children)];
+      return accum.concat([[newKey, format(item.children)]]);
     }
-    if (_.isPlainObject(item.value)) {
-      return [newKey, deepEntries(item.value)];
+    if (item.status === 'changed') {
+      const before = item.valueBefore;
+      const after = item.valueAfter;
+      const valueBefore = _.isPlainObject(before) ? deepEntries(before) : before;
+      const valueAfter = _.isPlainObject(after) ? deepEntries(after) : after;
+      return accum.concat([[chooseKey(item.key, 'removed'), valueBefore], [chooseKey(item.key, 'added'), valueAfter]]);
     }
     const { value } = item;
-    return [newKey, value];
-  });
+    if (_.isPlainObject(value)) {
+      return accum.concat([[newKey, deepEntries(value)]]);
+    }
+    return accum.concat([[newKey, value]]);
+  }, []);
   return newTree;
 };
 
